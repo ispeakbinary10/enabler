@@ -66,6 +66,13 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	// Set default version for dependencies
+	viper.SetDefault("kubectl", map[string]string{"version": "1.17.3"})
+	viper.SetDefault("helm", map[string]string{"version": "3.1.2"})
+	viper.SetDefault("istio", map[string]string{"version": "1.5.1"})
+	viper.SetDefault("kind", map[string]string{"version": "0.7.0"})
+	viper.SetDefault("skaffold", map[string]string{"version": "latest"})
+
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -78,8 +85,9 @@ func initConfig() {
 		}
 
 		// Search config in home directory with name ".enabler" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".enabler")
+		viper.AddConfigPath(home + "/.config/enabler")
+		viper.SetConfigName("enabler") // name of config file (without extension)
+		viper.SetConfigType("yaml") // REQUIRED if the config file does not have the extension in the name
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
@@ -88,4 +96,17 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+
+	// Check if something is missing
+	viper.AllKeys()
+
+}
+
+func InSlice(slice []string, val string) (int, bool) {
+	for i, item := range slice {
+		if item == val {
+			return i, true
+		}
+	}
+	return -1, false
 }
