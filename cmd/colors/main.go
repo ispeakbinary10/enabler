@@ -1,4 +1,4 @@
-package cmd
+package colors
 
 const (
 	RED    = "\033[31m"
