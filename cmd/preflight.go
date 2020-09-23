@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/keitaroinc/enabler/cmd/colors"
 )
 
 // TODO: Specify versions and dependencies via config file?
@@ -43,14 +44,14 @@ to quickly create a Cobra application.`,
 		cmdOut, err := command.Output()
 		if err != nil {
 			// java is not present in the system
-			fmt.Println(string(RED), "java is not present on the machine, terminating...")
+			fmt.Println(string(colors.RED), "java is not present on the machine, terminating...")
 			os.Exit(126)
 		}
 		version := strings.Split(string(cmdOut), " ")
 		if strings.HasPrefix(version[1], "11") {
-			fmt.Println(string(WHITE), "java jdk 11", string(GREEN), "✓")
+			fmt.Println(string(colors.WHITE), "java jdk 11", string(colors.GREEN), "✓")
 		} else {
-			fmt.Println(string(RED), "Java JDK 11 needed, please change the version of java on your machine.")
+			fmt.Println(string(colors.RED), "Java JDK 11 needed, please change the version of java on your machine.")
 			os.Exit(1)
 		}
 
@@ -61,23 +62,23 @@ to quickly create a Cobra application.`,
 		cmdOut, err = command.Output()
 		if err != nil {
 			// java is not present in the system
-			fmt.Println(string(RED), "docker is not present on the machine, terminating...")
+			fmt.Println(string(colors.RED), "docker is not present on the machine, terminating...")
 			os.Exit(126)
 		} else {
-			fmt.Println(string(WHITE), "docker "+strings.TrimSpace(string(cmdOut)), string(GREEN), "✓")
+			fmt.Println(string(colors.WHITE), "docker "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
 		}
 		// check if helm is present on the system
 		command = exec.Command("helm", "version", "--short")
 		cmdOut, err = command.Output()
 		if err != nil {
 			// java is not present in the system
-			fmt.Println(string(RED), "helm is not present on the machine, terminating...")
+			fmt.Println(string(colors.RED), "helm is not present on the machine, terminating...")
 			os.Exit(126)
 		}
 		if strings.HasPrefix(strings.TrimSpace(string(cmdOut)), "v3") {
-			fmt.Println(string(WHITE), "helm "+strings.TrimSpace(string(cmdOut)), string(GREEN), "✓")
+			fmt.Println(string(colors.WHITE), "helm "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
 		} else {
-			fmt.Println(string(RED), "helm 3 needed, please install it on the machine.")
+			fmt.Println(string(colors.RED), "helm 3 needed, please install it on the machine.")
 			os.Exit(1)
 		}
 		// check if kind is present on the system
@@ -85,49 +86,49 @@ to quickly create a Cobra application.`,
 		cmdOut, err = command.Output()
 		if err != nil {
 			// kind is not present in the system
-			fmt.Println(string(RED), "kind is not present on the machine, terminating...")
+			fmt.Println(string(colors.RED), "kind is not present on the machine, terminating...")
 			os.Exit(126)
 		} else {
-			fmt.Println(string(WHITE), strings.TrimSpace(string(cmdOut)), string(GREEN), "✓")
+			fmt.Println(string(colors.WHITE), strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
 		}
 		// check if skaffold is present on the system
 		command = exec.Command("skaffold", "version")
 		cmdOut, err = command.Output()
 		if err != nil {
 			// kind is not present in the system
-			fmt.Println(string(RED), "skaffold is not present on the machine, terminating...")
+			fmt.Println(string(colors.RED), "skaffold is not present on the machine, terminating...")
 			os.Exit(126)
 		} else {
-			fmt.Println(string(WHITE), "skaffold "+strings.TrimSpace(string(cmdOut)), string(GREEN), "✓")
+			fmt.Println(string(colors.WHITE), "skaffold "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
 		}
 		// check if kubectl is present on the system
 		command = exec.Command("kubectl", "version", "--client=true", "--short=true")
 		cmdOut, err = command.Output()
 		if err != nil {
 			// kind is not present in the system
-			fmt.Println(string(RED), "kubectl is not present on the machine, terminating...")
+			fmt.Println(string(colors.RED), "kubectl is not present on the machine, terminating...")
 			os.Exit(126)
 		} else {
-			fmt.Println(string(WHITE), "kubectl "+strings.TrimSpace(strings.ToLower(string(cmdOut))), string(GREEN), "✓")
+			fmt.Println(string(colors.WHITE), "kubectl "+strings.TrimSpace(strings.ToLower(string(cmdOut))), string(colors.GREEN), "✓")
 		}
 		// check if istioctl is present on the system
 		command = exec.Command("istioctl", "version", "-s", "--remote=false")
 		cmdOut, err = command.Output()
 		if err != nil {
 			// kind is not present in the system
-			fmt.Println(string(RED), "istioctl is not present on the machine, terminating...")
+			fmt.Println(string(colors.RED), "istioctl is not present on the machine, terminating...")
 			os.Exit(126)
 		}
 		version = strings.Split(strings.TrimSpace(string(cmdOut)), ".")
 		minorVer, err := strconv.Atoi(version[1])
 		if err != nil {
-			fmt.Println(string(RED), "unable to parse istio version, terminating...")
+			fmt.Println(string(colors.RED), "unable to parse istio version, terminating...")
 			os.Exit(126)
 		}
 		if minorVer >= 5 {
-			fmt.Println(string(WHITE), "istio "+strings.TrimSpace(string(cmdOut)), string(GREEN), "✓")
+			fmt.Println(string(colors.WHITE), "istio "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
 		} else {
-			fmt.Println(string(RED), "istio 1.5 or greater needed, please update the version of istio on your machine.")
+			fmt.Println(string(colors.RED), "istio 1.5 or greater needed, please update the version of istio on your machine.")
 			os.Exit(1)
 		}
 	},
