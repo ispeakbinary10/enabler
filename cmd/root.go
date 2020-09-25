@@ -64,7 +64,7 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.config/enabler/enabler.yaml)")
-	rootCmd.PersistentFlags().StringVarP(&kubeCtx, "kube-context", "", "keitaro", "The kubernetes context to use")
+	rootCmd.PersistentFlags().StringVarP(&kubeCtx, "kube-context", "", "keitaro", "The kubernetes context to use (defaults to \"keitaro\")")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -77,7 +77,6 @@ func init() {
 	rootCmd.AddCommand(setup.MainCmd)
 	rootCmd.AddCommand(platform.MainCmd)
 	rootCmd.AddCommand(preflight.MainCmd)
-
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -116,13 +115,4 @@ func initConfig() {
 	// Check if something is missing
 	viper.AllKeys()
 
-}
-
-func InSlice(slice []string, val string) (int, bool) {
-	for i, item := range slice {
-		if item == val {
-			return i, true
-		}
-	}
-	return -1, false
 }

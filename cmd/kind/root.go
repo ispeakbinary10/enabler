@@ -33,14 +33,6 @@ which defaults to "keitaro"`,
 }
 
 func init() {
-	// register sub-commands
-
-	MainCmd.AddCommand(createCmd)
-	MainCmd.AddCommand(deleteCmd)
-	MainCmd.AddCommand(startCmd)
-	MainCmd.AddCommand(stopCmd)
-	MainCmd.AddCommand(statusCmd)
-
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -50,4 +42,12 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// kindCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	// initialize and register sub-commands e.g.:
+	// MainCmd.AddCommand(subCmd)
+	MainCmd.AddCommand(createCmd)
+	MainCmd.AddCommand(deleteCmd)
+	MainCmd.AddCommand(startCmd)
+	MainCmd.AddCommand(stopCmd)
+	MainCmd.AddCommand(statusCmd)
 }
