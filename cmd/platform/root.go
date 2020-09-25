@@ -13,39 +13,40 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package platform
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
-// platformCmd represents the platform command
-var platformCmd = &cobra.Command{
+// kindCmd represents the kind command
+var MainCmd = &cobra.Command{
 	Use:   "platform",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Platform commands",
+	Long: `This command lets you manage kind clusters.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+The name of the cluster is taken from the global flag --kube-context
+which defaults to "keitaro"`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("platform called")
+		cmd.Help()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(platformCmd)
+	// register sub-commands
+	MainCmd.AddCommand(infoCmd)
+	MainCmd.AddCommand(initCmd)
+	MainCmd.AddCommand(keysCmd)
+	MainCmd.AddCommand(releaseCmd)
+	MainCmd.AddCommand(versionCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// platformCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// kindCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// platformCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// kindCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

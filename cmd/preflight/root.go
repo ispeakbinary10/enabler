@@ -13,23 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package preflight
 
 import (
 	"fmt"
+	"github.com/keitaroinc/enabler/cmd/colors"
+	"github.com/spf13/cobra"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
-
-	"github.com/spf13/cobra"
-	"github.com/keitaroinc/enabler/cmd/colors"
 )
 
 // TODO: Specify versions and dependencies via config file?
 
 // preflightCmd represents the preflight command
-var preflightCmd = &cobra.Command{
+var MainCmd = &cobra.Command{
 	Use:   "preflight",
 	Short: "Checks if required dependencies are installed in the system",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -135,15 +134,16 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	rootCmd.AddCommand(preflightCmd)
-
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// preflightCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// MainCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// preflightCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// MainCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	// initialize and register sub-commands e.g.:
+	// MainCmd.AddCommand(sub)
 }

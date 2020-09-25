@@ -15,7 +15,7 @@ var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize infrastructure services",
 	Long:  `You can use the init command to download and install all serv ices such as: kind, kubectl, istioctl, helm and skaffold`,
-	Run: func(inCmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 		// create dirs
 		path, err := os.Getwd()
 		if err != nil {

@@ -43,14 +43,18 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// setupCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// MainCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 
-	// setupCmd.Flags().BoolVarP(&initFlag, "init", "i", false, "Download and configure all services")
+	// MainCmd.Flags().BoolVarP(&initFlag, "init", "i", false, "Download and configure all services")
+
+	// initialize and register sub-commands e.g.:
+	// MainCmd.AddCommand(sub)
 	MainCmd.AddCommand(initCmd)
 	MainCmd.AddCommand(istioCmd)
+	MainCmd.AddCommand(metallbCmd)
 }
 
 func InstallDependency(name string, url string, dest string) error {

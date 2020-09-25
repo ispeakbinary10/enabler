@@ -17,13 +17,17 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/keitaroinc/enabler/cmd/apps"
+	"github.com/keitaroinc/enabler/cmd/kind"
+	"github.com/keitaroinc/enabler/cmd/platform"
+	"github.com/keitaroinc/enabler/cmd/preflight"
 	"github.com/spf13/cobra"
 	"os"
 
-	homedir "github.com/mitchellh/go-homedir"
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 
-	setup "github.com/keitaroinc/enabler/cmd/setup"
+	"github.com/keitaroinc/enabler/cmd/setup"
 )
 
 var cfgFile, kubeCtx string
@@ -66,12 +70,19 @@ func init() {
 	// when this action is called directly.
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
+	// initialize and register sub-commands e.g.:
+	// MainCmd.AddCommand(sub)
+	rootCmd.AddCommand(apps.MainCmd)
+	rootCmd.AddCommand(kind.MainCmd)
 	rootCmd.AddCommand(setup.MainCmd)
+	rootCmd.AddCommand(platform.MainCmd)
+	rootCmd.AddCommand(preflight.MainCmd)
+
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	// Set default version for dependencies
+	// Set default versions for all required dependencies
 	viper.SetDefault("kubectl", map[string]string{"version": "1.17.3"})
 	viper.SetDefault("helm", map[string]string{"version": "3.1.2"})
 	viper.SetDefault("istio", map[string]string{"version": "1.5.1"})
@@ -92,7 +103,7 @@ func initConfig() {
 		// Search config in home directory with name ".enabler" (without extension).
 		viper.AddConfigPath(home + "/.config/enabler")
 		viper.SetConfigName("enabler") // name of config file (without extension)
-		viper.SetConfigType("yaml") // REQUIRED if the config file does not have the extension in the name
+		viper.SetConfigType("yaml")    // REQUIRED if the config file does not have the extension in the name
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

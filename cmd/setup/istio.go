@@ -19,11 +19,10 @@ var istioCmd = &cobra.Command{
 		command := exec.Command("istioctl", "verify-install", "--context", fmt.Sprintf("kind-%s", kubeContext))
 		_, err := command.Output()
 		if err != nil {
-			// java is not present in the system
+			// istio verification failed, exit
 			fmt.Println(string(colors.RED), "Istio pre-check failed...aborting install.")
 			os.Exit(126)
 		}
-
 		fmt.Println("Installing istio, please wait...")
 
 		// TODO: configure istio through config?
@@ -39,7 +38,7 @@ var istioCmd = &cobra.Command{
 		)
 		_, err = command.Output()
 		if err != nil {
-			// java is not present in the system
+			// istio installation failed, exit
 			fmt.Println(string(colors.RED), "Istio installation failed.")
 			os.Exit(126)
 		} else {
