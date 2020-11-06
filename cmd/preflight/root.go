@@ -16,8 +16,7 @@ limitations under the License.
 package preflight
 
 import (
-	"fmt"
-	"github.com/keitaroinc/enabler/cmd/colors"
+	"github.com/keitaroinc/enabler/cmd/util"
 	"github.com/spf13/cobra"
 	"os"
 	"os/exec"
@@ -38,20 +37,20 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		log := util.NewLogger("INFO", nil)
 		// check if java is present on the system
 		command := exec.Command("java", "--version")
 		cmdOut, err := command.Output()
 		if err != nil {
 			// java is not present in the system
-			fmt.Println(string(colors.RED), "java is not present on the machine, terminating...")
+			log.Fatal("java is not present on the machine, terminating...")
 			os.Exit(126)
 		}
 		version := strings.Split(string(cmdOut), " ")
 		if strings.HasPrefix(version[1], "11") {
-			fmt.Println(string(colors.WHITE), "java jdk 11", string(colors.GREEN), "✓")
+			log.Info("java jdk 11 ✓")
 		} else {
-			fmt.Println(string(colors.RED), "Java JDK 11 needed, please change the version of java on your machine.")
-			os.Exit(1)
+			log.Fatal("Java JDK 11 needed, please change the version of java on your machine.")
 		}
 
 		// figure out if there's a better way to check for required dependencies???
@@ -60,75 +59,66 @@ to quickly create a Cobra application.`,
 		command = exec.Command("docker", "version", "-f", "{{.Server.Version}}")
 		cmdOut, err = command.Output()
 		if err != nil {
-			// java is not present in the system
-			fmt.Println(string(colors.RED), "docker is not present on the machine, terminating...")
-			os.Exit(126)
+			// docker is not present in the system
+			log.Fatal("docker is not present on the machine, terminating...")
 		} else {
-			fmt.Println(string(colors.WHITE), "docker "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
+			log.Infof("docker %s ✓", strings.TrimSpace(string(cmdOut)))
 		}
 		// check if helm is present on the system
 		command = exec.Command("helm", "version", "--short")
 		cmdOut, err = command.Output()
 		if err != nil {
-			// java is not present in the system
-			fmt.Println(string(colors.RED), "helm is not present on the machine, terminating...")
-			os.Exit(126)
+			// helm is not present in the system
+			log.Fatal("helm is not present on the machine, terminating...")
 		}
 		if strings.HasPrefix(strings.TrimSpace(string(cmdOut)), "v3") {
-			fmt.Println(string(colors.WHITE), "helm "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
+			log.Infof("helm %s ✓", strings.TrimSpace(string(cmdOut)))
 		} else {
-			fmt.Println(string(colors.RED), "helm 3 needed, please install it on the machine.")
-			os.Exit(1)
+			log.Fatal("helm 3 needed, please install it on the machine.")
 		}
 		// check if kind is present on the system
 		command = exec.Command("kind", "version")
 		cmdOut, err = command.Output()
 		if err != nil {
 			// kind is not present in the system
-			fmt.Println(string(colors.RED), "kind is not present on the machine, terminating...")
-			os.Exit(126)
+			log.Fatal("kind is not present on the machine, terminating...")
 		} else {
-			fmt.Println(string(colors.WHITE), strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
+			log.Infof("%s ✓", strings.TrimSpace(string(cmdOut)))
 		}
 		// check if skaffold is present on the system
 		command = exec.Command("skaffold", "version")
 		cmdOut, err = command.Output()
 		if err != nil {
-			// kind is not present in the system
-			fmt.Println(string(colors.RED), "skaffold is not present on the machine, terminating...")
-			os.Exit(126)
+			// skaffold is not present in the system
+			log.Fatal("skaffold is not present on the machine, terminating...")
 		} else {
-			fmt.Println(string(colors.WHITE), "skaffold "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
+			log.Infof("skaffold %s ✓", strings.TrimSpace(string(cmdOut)))
 		}
 		// check if kubectl is present on the system
 		command = exec.Command("kubectl", "version", "--client=true", "--short=true")
 		cmdOut, err = command.Output()
 		if err != nil {
-			// kind is not present in the system
-			fmt.Println(string(colors.RED), "kubectl is not present on the machine, terminating...")
-			os.Exit(126)
+			// kubectl is not present in the system
+			log.Fatal("kubectl is not present on the machine, terminating...")
 		} else {
-			fmt.Println(string(colors.WHITE), "kubectl "+strings.TrimSpace(strings.ToLower(string(cmdOut))), string(colors.GREEN), "✓")
+			log.Infof("kubectl %s ✓", strings.TrimSpace(strings.ToLower(string(cmdOut))))
 		}
 		// check if istioctl is present on the system
 		command = exec.Command("istioctl", "version", "-s", "--remote=false")
 		cmdOut, err = command.Output()
 		if err != nil {
-			// kind is not present in the system
-			fmt.Println(string(colors.RED), "istioctl is not present on the machine, terminating...")
-			os.Exit(126)
+			// istio is not present in the system
+			log.Fatal("istioctl is not present on the machine, terminating...")
 		}
 		version = strings.Split(strings.TrimSpace(string(cmdOut)), ".")
 		minorVer, err := strconv.Atoi(version[1])
 		if err != nil {
-			fmt.Println(string(colors.RED), "unable to parse istio version, terminating...")
-			os.Exit(126)
+			log.Fatal("unable to parse istio version, terminating...")
 		}
 		if minorVer >= 5 {
-			fmt.Println(string(colors.WHITE), "istio "+strings.TrimSpace(string(cmdOut)), string(colors.GREEN), "✓")
+			log.Infof("istio %s ✓", strings.TrimSpace(string(cmdOut)))
 		} else {
-			fmt.Println(string(colors.RED), "istio 1.5 or greater needed, please update the version of istio on your machine.")
-			os.Exit(1)
+			log.Fatal("istio 1.5 or greater needed, please update the version of istio on your machine.")
 		}
 	},
 }
