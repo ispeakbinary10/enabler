@@ -30,10 +30,9 @@ var metallbCmd = &cobra.Command{
 		_, err := command.Output()
 		if err != nil {
 			// metallb is not present in the system
-			log.Fatal("Metallb not found...installing.")
+			log.Error("Metallb not found...initiating installation...")
 		}
 		log.Infof("Installing metallb, please wait...")
-
 		// get docker client
 		cli, err := client.NewEnvClient()
 		if err != nil {
@@ -90,6 +89,7 @@ var metallbCmd = &cobra.Command{
 			command = exec.Command("kubectl", "create", "ns", "metallb",
 				"--context", fmt.Sprintf("kind-%s", kubeContext),
 			)
+			cmdOut, err = command.Output()
 			if err, ok := err.(*exec.ExitError); ok {
 				log.Fatal("Could not create namespace for metallb, terminating.")
 				os.Exit(err.ExitCode())
