@@ -22,7 +22,7 @@ var istioCmd = &cobra.Command{
 			log.Fatal("Istio pre-check failed...aborting install.")
 		}
 		log.Infof("Installing istio, please wait...")
-
+		// TODO: Add spinner because setup takes a while
 		// TODO: configure istio through config?
 		command = exec.Command("istioctl", "manifest", "apply", "-y",
 			"--set", "profile=default",
