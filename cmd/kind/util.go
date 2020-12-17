@@ -40,6 +40,7 @@ func getClusterInfo(cluster string) error {
 
 func setKubeConfig(container types.Container, cluster string) error {
 	log := util.NewLogger("INFO", nil)
+	log.Debugf("Setting port: %d on container (%s)", container.Ports[0].PublicPort, container.ID)
 	command := exec.Command("kubectl", "config", "set-cluster", fmt.Sprintf("kind-%s", cluster),
 		"--server", fmt.Sprintf("https://127.0.0.1:%d", container.Ports[0].PublicPort))
 	_, err := command.Output()

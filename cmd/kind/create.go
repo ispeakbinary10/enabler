@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 var config string
@@ -15,21 +16,29 @@ var createCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		log := util.NewLogger("INFO", nil)
-		if config != ""{
+		if config != "" {
 			// check if the kind cluster already exists
 			kubeContext := cmd.Flag("kube-context").Value
 			err := getKind(kubeContext.String())
 			if err != nil {
-				log.Infof("Kind cluster %s doesn't exist, continue with creation.", kubeContext)
+				log.Infof("Kind cluster %s doesn't exist, continue with creation...", kubeContext)
 			} else {
-				log.Infof("Kind cluster %s already exists, skipping creation.", kubeContext)
+				log.Infof("Kind cluster %s already exists, skipping creation...", kubeContext)
 				os.Exit(0)
 			}
-
+			// check if cluster config file exist
+			// TODO: validate yaml
+			configPath := config
+			if !filepath.IsAbs(config) {
+				configPath, _ = filepath.Abs(config)
+			}
+			if _, err := os.Stat(configPath); os.IsNotExist(err) {
+				log.Fatalf("Config file (%s) doesn't exist, aborting cluster creation...", configPath)
+			}
 			// create the kind cluster
 			command := exec.Command("kind", "create", "cluster",
 				"--name", kubeContext.String(),
-				"--config", config,
+				"--config", configPath,
 			)
 			_, err = command.Output()
 			if err != nil {

@@ -51,9 +51,9 @@ var stopCmd = &cobra.Command{
 			// stop the running containers
 			s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 			s.Color("green")
-			s.Prefix = "Stopping containers "
+			s.Prefix = "Stopping containers..."
 			s.Start()
-			stopDuration := 5000*time.Millisecond
+			stopDuration := 5000 * time.Millisecond
 			for _, container := range containers {
 				switch container.State {
 				case "running":
@@ -74,4 +74,3 @@ var stopCmd = &cobra.Command{
 		}
 	},
 }
-

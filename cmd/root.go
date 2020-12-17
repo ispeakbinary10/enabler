@@ -89,6 +89,7 @@ func initConfig() {
 	viper.SetDefault("istio", map[string]string{"version": "1.5.1"})
 	viper.SetDefault("kind", map[string]string{"version": "0.7.0"})
 	viper.SetDefault("skaffold", map[string]string{"version": "latest"})
+	viper.SetDefault("config-file", "kind-cluster.yml")
 
 	if cfgFile != "" {
 		// Use config file from the flag.
