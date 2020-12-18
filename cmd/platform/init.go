@@ -54,7 +54,7 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// namesoaceCmd.PersistentFlags().String("foo", "", "A help for foo")
+
 	cwd, _ := os.Getwd()
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
