@@ -17,13 +17,15 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
+	"github.com/keitaroinc/enabler/cmd/add"
 	"github.com/keitaroinc/enabler/cmd/apps"
 	"github.com/keitaroinc/enabler/cmd/kind"
 	"github.com/keitaroinc/enabler/cmd/platform"
 	"github.com/keitaroinc/enabler/cmd/preflight"
 	"github.com/keitaroinc/enabler/cmd/util"
 	"github.com/spf13/cobra"
-	"os"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -78,6 +80,7 @@ func init() {
 	rootCmd.AddCommand(setup.MainCmd)
 	rootCmd.AddCommand(platform.MainCmd)
 	rootCmd.AddCommand(preflight.MainCmd)
+	rootCmd.AddCommand(add.MainCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -103,6 +106,7 @@ func initConfig() {
 		}
 
 		// Search config in home directory with name ".enabler" (without extension).
+		// TODO: implement per project config file (overrides default config)
 		viper.AddConfigPath(home + "/.config/enabler")
 		viper.SetConfigName("enabler") // name of config file (without extension)
 		viper.SetConfigType("yaml")    // REQUIRED if the config file does not have the extension in the name
