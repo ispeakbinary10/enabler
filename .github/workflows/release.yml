@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Set up Go 1.15.6
+      - name: Set up Go ${{ matrix.go_version }}
         uses: actions/setup-go@v1
         with:
           go-version: ${{ matrix.go_version }}
@@ -28,7 +28,7 @@ jobs:
           go_version: ${{ matrix.go_version }}
           dest: build
           prefix: go-enabler
-          targets: linux/386,linux/amd64,darwin/386,darwin/amd64,windows/386,windows/amd64
+          targets: linux/amd64,darwin/amd64,windows/amd64,linux/arm64,darwin/arm64
           v: true
           x: false
           ldflags: -s -w
@@ -45,8 +45,6 @@ jobs:
           prerelease: false
       - name: Push release binaries
         uses: glentiki/xbin-release-action@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           assets_path: ./build
