@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        go_version: [1.13.x,1.15.x]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Set up Go ${{ matrix.go_version }}
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go_version }}
+
+      - name: Build binaries
+        uses: crazy-max/ghaction-xgo@v1
+        with:
+          xgo_version: latest
+          go_version: ${{ matrix.go_version }}
+          dest: build
+          prefix: go-enabler
+          targets: linux/amd64,darwin/amd64,windows/amd64,linux/arm64,darwin/arm64
+          v: true
+          x: false
+          ldflags: -s -w
+
+      - name: Create release
+        uses: actions/create-release@v1.0.0
+        id: create_release
+        with:
+          # TODO: create custom body that contains changelog with commits
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Push release binaries
+        uses: glentiki/xbin-release-action@v1.0.0
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          assets_path: ./build
