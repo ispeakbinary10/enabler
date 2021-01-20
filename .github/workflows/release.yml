@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'v*'
 
 jobs:
   release:
@@ -14,13 +14,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
       - name: Set up Go ${{ matrix.go_version }}
         uses: actions/setup-go@v1
         with:
           go-version: ${{ matrix.go_version }}
-#     Skip tests for now
-#      - name: Run tests
-#        run: make test
+
       - name: Build binaries
         uses: crazy-max/ghaction-xgo@v1
         with:
@@ -32,17 +31,17 @@ jobs:
           v: true
           x: false
           ldflags: -s -w
+
       - name: Create release
         uses: actions/create-release@v1.0.0
         id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # TODO: create custom body that contains changelog with commits
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
       - name: Push release binaries
         uses: glentiki/xbin-release-action@v1.0.0
         with:
