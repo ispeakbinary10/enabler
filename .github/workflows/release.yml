@@ -14,6 +14,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+
+      - name: Generage changelog
+        id: generate_changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          addSections: '{"documentation":{"prefix":"### Documentation","labels":["documentation"]},"tests":{"prefix":"### Testing","labels":["tests"]}}'
+          issues: true
+          issuesWoLabels: true
+          pullRequests: true
+          prWoLabels: true
+          author: true
+          stripGeneratorNotice: true
+          verbose: true
+          onlyLastTag: true
+          compareLink: true
 
       - name: Set up Go ${{ matrix.go_version }}
         uses: actions/setup-go@v1
@@ -33,17 +51,21 @@ jobs:
           ldflags: -s -w
 
       - name: Create release
-        uses: actions/create-release@v1.0.0
+        uses: actions/create-release@v1
         id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # TODO: create custom body that contains changelog with commits
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+          body: ${{ steps.generate_changelog.outputs.changelog }}
 
       - name: Push release binaries
         uses: glentiki/xbin-release-action@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           assets_path: ./build
