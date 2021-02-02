@@ -4,6 +4,7 @@ import (
 	"github.com/keitaroinc/enabler/pkg/cmd"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/preflight"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/setup"
+	"github.com/keitaroinc/enabler/pkg/cmd/enabler/apps"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -32,6 +33,7 @@ to quickly create a Cobra application.`,
 	// register commands
 	cmd.AddCommand(preflight.NewCommand(logger, streams))
 	cmd.AddCommand(setup.NewCommand(logger, streams))
+	cmd.AddCommand(apps.NewCommand(logger, streams))
 
 	return cmd
 }
