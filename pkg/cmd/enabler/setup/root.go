@@ -19,6 +19,7 @@ func NewCommand(log *logrus.Logger, streams cmd.IOStreams) *cobra.Command {
 			cmd.AddCommand(initcmd.NewCommand(log, streams))
 			cmd.AddCommand(istio.NewCommand(log, streams))
 			cmd.AddCommand(metallb.NewCommand(log, streams))
+			cmd.Help()
 		},
 	}
 	return cmd
