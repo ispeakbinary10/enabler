@@ -22,7 +22,6 @@ import (
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/kind/start"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/kind/status"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/kind/stop"
-
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -37,13 +36,13 @@ The name of the cluster is taken from the global flag --kube-context
 which defaults to "keitaro"`,
 
 		Run: func(cmd *cobra.Command, args []string) {
-			cmd.AddCommand(create.NewCommand(log, streams))
-			cmd.AddCommand(delete.NewCommand(log, streams))
-			cmd.AddCommand(start.NewCommand(log, streams))
-			cmd.AddCommand(stop.NewCommand(log, streams))
-			cmd.AddCommand(status.NewCommand(log, streams))
 			cmd.Help()
 		},
 	}
+	cmd.AddCommand(create.NewCommand(log, streams))
+	cmd.AddCommand(delete.NewCommand(log, streams))
+	cmd.AddCommand(start.NewCommand(log, streams))
+	cmd.AddCommand(stop.NewCommand(log, streams))
+	cmd.AddCommand(status.NewCommand(log, streams))
 	return cmd
 }

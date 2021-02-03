@@ -16,11 +16,11 @@ func NewCommand(log *logrus.Logger, streams cmd.IOStreams) *cobra.Command {
 		Long: `You can use the setup command to download and configure all infrastructure services such as: kind, kubectl, istioctl, helm and skaffold.`,
 
 		Run: func(cmd *cobra.Command, args []string) {
-			cmd.AddCommand(initcmd.NewCommand(log, streams))
-			cmd.AddCommand(istio.NewCommand(log, streams))
-			cmd.AddCommand(metallb.NewCommand(log, streams))
 			cmd.Help()
 		},
 	}
+	cmd.AddCommand(initcmd.NewCommand(log, streams))
+	cmd.AddCommand(istio.NewCommand(log, streams))
+	cmd.AddCommand(metallb.NewCommand(log, streams))
 	return cmd
 }

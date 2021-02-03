@@ -15,9 +15,9 @@ func NewCommand(log *logrus.Logger, streams cmd.IOStreams) *cobra.Command {
 The name of the cluster is taken from the global flag --kube-context which defaults to "keitaro"`,
 
 		Run: func(cmd *cobra.Command, args []string) {
-			cmd.AddCommand(namespace.NewCommand(log, streams))
 			cmd.Help()
 		},
 	}
+	cmd.AddCommand(namespace.NewCommand(log, streams))
 	return cmd
 }
