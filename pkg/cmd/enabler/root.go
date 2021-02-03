@@ -3,6 +3,7 @@ package enabler
 import (
 	"github.com/keitaroinc/enabler/pkg/cmd"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/kind"
+	"github.com/keitaroinc/enabler/pkg/cmd/enabler/platform"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/preflight"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/setup"
 	"github.com/keitaroinc/enabler/pkg/cmd/enabler/apps"
@@ -31,6 +32,7 @@ func NewCommand(logger *logrus.Logger, streams cmd.IOStreams) *cobra.Command {
 	cmd.AddCommand(setup.NewCommand(logger, streams))
 	cmd.AddCommand(apps.NewCommand(logger, streams))
 	cmd.AddCommand(kind.NewCommand(logger, streams))
+	cmd.AddCommand(platform.NewCommand(logger, streams))
 
 	return cmd
 }
