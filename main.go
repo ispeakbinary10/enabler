@@ -15,8 +15,10 @@ limitations under the License.
 */
 package main
 
-import "github.com/keitaroinc/enabler/cmd"
+import (
+	"github.com/keitaroinc/enabler/cmd/enabler/app"
+)
 
 func main() {
-	cmd.Execute()
+	app.Main()
 }
