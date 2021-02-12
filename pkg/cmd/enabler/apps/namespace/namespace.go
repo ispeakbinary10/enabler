@@ -18,7 +18,6 @@ func NewCommand(log *logrus.Logger, streams cmd.IOStreams) *cobra.Command {
 		Long:  `Create a namespace with auto-injection`,
 		Run: func(cmd *cobra.Command, args []string) {
 
-			cmd.Flags().StringVarP(&nsName, "name", "n", "", "The name of the k8s namespace")
 			kubeContext := cmd.Flag("kube-context").Value
 			if nsName != "" {
 				// check if the namespace exists
@@ -62,5 +61,6 @@ func NewCommand(log *logrus.Logger, streams cmd.IOStreams) *cobra.Command {
 			}
 		},
 	}
+	cmd.Flags().StringVarP(&nsName, "name", "n", "", "The name of the k8s namespace")
 	return cmd
 }
